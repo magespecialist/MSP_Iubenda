@@ -19,6 +19,7 @@
 namespace MSP\Iubenda\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class Config
 {
@@ -43,7 +44,7 @@ class Config
      */
     public function isEnabled()
     {
-        return $this->scopeConfig->isSetFlag(self::XML_PATH_ENABLED);
+        return $this->scopeConfig->isSetFlag(self::XML_PATH_ENABLED, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -51,7 +52,7 @@ class Config
      */
     public function getTextAfterLink()
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_TEXT_AFTER_LINK);
+        return $this->scopeConfig->getValue(self::XML_PATH_TEXT_AFTER_LINK, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -59,7 +60,7 @@ class Config
      */
     public function getTextBeforeLink()
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_TEXT_BEFORE_LINK);
+        return $this->scopeConfig->getValue(self::XML_PATH_TEXT_BEFORE_LINK, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -67,7 +68,7 @@ class Config
      */
     public function getLinkText()
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_TEXT_LINK);
+        return $this->scopeConfig->getValue(self::XML_PATH_TEXT_LINK, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -75,7 +76,7 @@ class Config
      */
     public function getPolicyId()
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_POLICY_ID);
+        return $this->scopeConfig->getValue(self::XML_PATH_POLICY_ID, ScopeInterface::SCOPE_STORE);
     }
 
 }
