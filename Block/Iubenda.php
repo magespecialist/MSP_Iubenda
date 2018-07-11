@@ -19,59 +19,21 @@
 
 namespace MSP\Iubenda\Block;
 
+use MSP\Iubenda\Model\Config;
+
 class Iubenda extends \Magento\Framework\View\Element\Template
 {
-    const XML_PATH_ENABLED = 'msp_iubenda/general/enabled';
-    const XML_PATH_POLICY_ID = 'msp_iubenda/general/policy_id';
-    const XML_PATH_TEXT_AFTER_LINK = 'msp_iubenda/general/text_after_link';
-    const XML_PATH_TEXT_BEFORE_LINK = 'msp_iubenda/general/text_before_link';
-    const XML_PATH_TEXT_LINK = 'msp_iubenda/general/text_link';
 
-    /**
-     * @var boolean
-     */
-    private $isEnabled;
-
-    /**
-     * @var integer
-     */
-    private $policyId;
-
-    /**
-     * @var string
-     */
-    private $textAfterLink;
-
-    /**
-     * @var string
-     */
-    private $textBeforeLink;
-
-    /**
-     * @var string
-     */
-    private $textLink;
-    /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    private $scopeConfigInterface;
+    private $config;
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
+        Config $config,
         array $data = []
     ) {
-        $this->scopeConfigInterface = $context->getScopeConfig();
 
-        $this->isEnabled = (boolean)$this->scopeConfigInterface->getValue(self::XML_PATH_ENABLED);
-        $this->policyId = (integer)$this->scopeConfigInterface->getValue(self::XML_PATH_POLICY_ID);
-        $this->textAfterLink = (string)$this->scopeConfigInterface->getValue(self::XML_PATH_TEXT_AFTER_LINK);
-        $this->textBeforeLink = (string)$this->scopeConfigInterface->getValue(self::XML_PATH_TEXT_BEFORE_LINK);
-        $this->textLink = (string)$this->scopeConfigInterface->getValue(self::XML_PATH_TEXT_LINK);
-
-        parent::__construct(
-            $context,
-            $data
-        );
+        $this->config = $config;
+        parent::__construct($context, $data);
     }
 
     /**
@@ -79,7 +41,7 @@ class Iubenda extends \Magento\Framework\View\Element\Template
      */
     public function exist()
     {
-        return $this->isEnabled && $this->policyId;
+        return $this->config->isEnabled() && !empty($this->getPolicyId());
     }
 
     /**
@@ -87,7 +49,7 @@ class Iubenda extends \Magento\Framework\View\Element\Template
      */
     public function getPolicyId()
     {
-        return $this->policyId;
+        return $this->config->getPolicyId();
     }
 
     /**
@@ -95,7 +57,7 @@ class Iubenda extends \Magento\Framework\View\Element\Template
      */
     public function getTextAfterLink()
     {
-        return $this->textAfterLink;
+        return $this->config->getTextAfterLink();
     }
 
     /**
@@ -103,7 +65,7 @@ class Iubenda extends \Magento\Framework\View\Element\Template
      */
     public function getTextBeforeLink()
     {
-        return $this->textBeforeLink;
+        return $this->config->getTextBeforeLink();
     }
 
     /**
@@ -111,6 +73,6 @@ class Iubenda extends \Magento\Framework\View\Element\Template
      */
     public function getTextLink()
     {
-        return $this->textLink;
+        return $this->config->getLinkText();
     }
 }
