@@ -20,21 +20,44 @@ define([
     "jquery",
     'jquery/jquery.cookie'
 ], function($){
+    var give_consent = function() {
+        if (check_cookie()) return;
+        var date = new Date();
+        date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+        $.cookie('msp_iubenda', 'ok', {expires: date});
+    }
+
+    var check_cookie = function() {
+        return $.cookie('msp_iubenda');
+    }
+
+    var close_container = function() {
+        $("#iubenda-container").slideUp();
+    }
+
+    var open_container = function() {
+        $("#iubenda-container").slideDown();
+    }
+
     return function (config) {
 
-        var check_cookie = $.cookie('msp_iubenda');
-
-        if (!check_cookie) {
-            $("#iubenda-container").slideDown();
+        if (!check_cookie()) {
+            open_container();
 
             $("#iubenda-container .close").click(function () {
-                var date = new Date();
-                date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-                $.cookie('msp_iubenda', 'ok', {expires: date});
-                $("#iubenda-container").slideUp();
+                give_consent();
+                close_container();
+
             });
             $(window).scroll(function(){
-                $("#iubenda-container").slideUp();
+                give_consent();
+                close_container();
+            });
+            $(document).click(function(event) {
+               if (!$(event.target).closest("#iubenda-container").length) {
+                   give_consent();
+                   close_container();
+               }
             });
         }
 
